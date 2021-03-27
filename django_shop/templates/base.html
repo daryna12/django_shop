@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Магазин "Сatkin"</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'index_url' %}">Главная</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'product_list_url' %}">Товары</a>
+              </li>
+              {% if request.user.is_staff %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" 
+                data-bs-toggle="dropdown" aria-expanded="false"
+                href="{% url 'product_list_url' %}">Действие</a>
+                <ul class="dropdown-menu align-content-center" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="{% url 'add_product_url' %}">Добавить</a></li>
+                  {% if product %}  
+                  <li><a class="dropdown-item" href="{{ product.get_update_url }}">Изменить</a></li>
+                  <li><a class="dropdown-item" href="{{ product.get_delete_url }}">Удалить</a></li>
+                  {% endif %}
+                </ul>
+              </li>
+              {% endif %}
+              {% if request.user.is_authenticated %}
+              <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" 
+                data-bs-toggle="dropdown" aria-expanded="false">
+                {{ request.user.username }}</a>
+                <ul class="dropdown-menu align-content-center" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="{% url 'profile_url' %}">Профиль</a></li>
+                  <li><a class="dropdown-item" href="{% url 'cart_url' %}">Корзина</a></li>
+                  <li><a class="dropdown-item" href="{% url 'ordered_list_url' %}">Заказы</a></li>
+                  <li><a class="dropdown-item" href="{% url 'logout' %}">Выход</a></li>
+                  
+                </ul>
+              </li>
+                  {% else %}
+              <li class="nav-item">
+                <a class="nav-link active " aria-current="page" href="{% url 'login' %}">Вход</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'django_registration_register' %}">Регистрация</a>
+              </li>
+              {% endif %}
+            </ul>
+            <form class="d-flex">
+              <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Поиск</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+<section class="py-5 text-center container">
+    <div class='row py lg-5'>
+        {% block content %}
+        {% endblock content %}
+    </div>
+</section>
+   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+</body>
+</html>

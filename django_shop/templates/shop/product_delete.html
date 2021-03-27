@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form attion="{{ obj.get_delete_url }}" method="post">
+{% csrf_token %}
+<h3>Вы действительно хотите удалить продукт<b>"{{ obj.name }}"</b>?</h3>
+<a href="{{ obj.get_absolute_url }}" class="btn btn-primary">Отмена</a>
+<button type="submit" class="btn btn-danger">Удалить</button>
+</form>
+
+{% endblock content %}

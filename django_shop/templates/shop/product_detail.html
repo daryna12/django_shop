@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class = 'container'>
+    <h3><b>Название:</b> {{ product.name }} </h3>
+    <p><b>Стоимость:</b> {{ product.price }} </p>
+    <p><b>Количество:</b> {{ product.count }} </p>
+    <p><b>Описание:</b> {{ product.description }} </p>
+    {% if product.image %}
+    <img height=700  width=700 src="{{ product.image.url }}" alt="product">
+
+    {% endif %}
+        <form action = '{% url "add_order_url" product.id %}' method = 'POST'>
+          {% csrf_token %}    
+          {{form_order}}
+              <input type="submit" class="btn btn-primary" value = "Добавить в корзину">
+        </form>
+</div>
+<div class= 'container-fluid'>
+    Комментарии:
+    {% for comment in product.comments.all %}
+    <div class = "row justify-content-center">
+    <div class="card mt-3" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Автор: {{ comment.author }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Время: {{ comment.time_stamp }} </h6>
+          <p class="card-text">Комментарий: {{ comment.comment }}</p>
+        </div>
+      </div>
+  </div>
+{% endfor %}
+{% if user.is_authenticated %}
+  <form action="{% url 'add_comment_url' product.id%}" method="post">
+
+      {% csrf_token %}
+      {{form}}
+      <input class = 'btn btn-primary mt-2' type='submit' value ='Комментировать'>
+
+  </form>
+  {% endif %}
+</div>
+{% endblock content %}
